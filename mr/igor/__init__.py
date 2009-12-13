@@ -4,7 +4,7 @@ import fileinput
 import shelve
 import pyflakes.checker
 
-import_db_fname = os.path.join(os.path.dirname(__file__), '.mr.igor')
+import_db_fname = os.path.join(os.path.expanduser('~'), '.mr.igor')
 
 PRINT = False
 
