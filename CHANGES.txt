@@ -1,7 +1,6 @@
 Changelog
 =========
 
-1.0dev (unreleased)
--------------------
+- 2009/12/13 - Added igor console script. [davisagli]
 
-- Initial release
+- 2009/12/12 - Initial proof-of-concept. [davisagli]

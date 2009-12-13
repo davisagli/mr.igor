@@ -26,6 +26,7 @@ setup(name='mr.igor',
           # -*- Extra requirements: -*-
       ],
       entry_points="""
-      # -*- Entry points: -*-
+      [console_scripts]
+      igor = mr.igor.script:main
       """,
       )
