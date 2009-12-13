@@ -1,3 +1,6 @@
+- Use ~/.mr.igor as a default database location, with a command-line
+  option to override.
+
 - Smarter heuristics for where in the file to insert the imports
   (e.g. should be after initial docstrings/comments)
 
