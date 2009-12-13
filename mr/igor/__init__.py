@@ -6,6 +6,8 @@ import pyflakes.checker
 
 import_db_fname = os.path.join(os.path.dirname(__file__), '.mr.igor')
 
+PRINT = False
+
 def add_missing_imports(checker):
     imports = set()
     for msg in checker.messages:
@@ -14,10 +16,19 @@ def add_missing_imports(checker):
             imp = find_import(checker._igor_import_db, name)
             if imp is not None and imp not in imports:
                 imports.add(imp)
-    for i, line in enumerate(fileinput.input(checker.filename, inplace = 1)):
-        if i == 0 and len(imports):
+    if PRINT:
+        if len(imports):
             sys.stdout.write("\n".join(imports) + "\n")
-        sys.stdout.write(line)
+        for line in fileinput.input(checker.filename):
+            sys.stdout.write(line)
+        # avoid the normal pyflakes warnings
+        sys.exit()
+    else:
+        # rewrite file inline
+        for i, line in enumerate(fileinput.input(checker.filename, inplace = 1)):
+            if i == 0 and len(imports):
+                sys.stdout.write("\n".join(imports) + "\n")
+            sys.stdout.write(line)
 
 def record_import(db, node):
     source = node.modname

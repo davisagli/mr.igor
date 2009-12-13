@@ -1,6 +1,8 @@
 Changelog
 =========
 
+- 2009/12/13 - Added --print option. [davisagli]
+
 - 2009/12/13 - Added igor console script. [davisagli]
 
 - 2009/12/12 - Initial proof-of-concept. [davisagli]
