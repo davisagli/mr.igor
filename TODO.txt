@@ -1,3 +1,6 @@
+- Create an igor console script so you don't have to patch
+  pyflakes manually.
+
 - Have two modes, one that only records info about imports, and
   one that actually rewrites a file to fill in missing ones.
 
