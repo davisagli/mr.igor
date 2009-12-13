@@ -22,6 +22,7 @@ setup(name='mr.igor',
       zip_safe=False,
       install_requires=[
           'setuptools',
+          'pyflakes',
           # -*- Extra requirements: -*-
       ],
       entry_points="""
