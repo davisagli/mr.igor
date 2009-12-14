@@ -7,14 +7,15 @@ from StringIO import StringIO
 from mr.igor import main as igor
 from mr.igor import checker
 
+checker.IMPORT_DB_FNAME += '.test'
+
 class TestIgor(unittest.TestCase):
     """ Functional test for Igor. """
 
-    def setUp(self):
-        checker.IMPORT_DB_FNAME += '.test'
+    def setUp(self):        
         if os.path.exists(checker.IMPORT_DB_FNAME + '.db'):
             os.unlink(checker.IMPORT_DB_FNAME + '.db')
-        
+
         (fd, self.filename) = tempfile.mkstemp(text=True)
         os.close(fd)
         
