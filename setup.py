@@ -1,10 +1,10 @@
 from setuptools import setup, find_packages
 
-version = '1.1'
+version = '1.0'
 
 setup(name='mr.igor',
       version=version,
-      description="",
+      description="Mr. Igor provides the parts you need to build your Frankenprogram.",
       long_description=open("README.txt").read() + "\n" +
                        open("CHANGES.txt").read(),
       # Get more strings from http://pypi.python.org/pypi?%3Aaction=list_classifiers
