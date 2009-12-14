@@ -15,16 +15,16 @@ class TestIgor(unittest.TestCase):
         
         # Populate db
         f = open(self.filename, 'w')
-        f.write('from foo import bar')
+        f.write('from foo import bar, baz')
         f.close()
         igor(self.filename)
         
         # Now manually remove the import
         f = open(self.filename, 'w')
-        f.write('bar')
+        f.write('bar\nbaz')
         f.close()
         
-        self.expected = "from foo import bar\nbar"
+        self.expected = "from foo import bar\nfrom foo import baz\nbar\nbaz"
 
     def testIgorPrinted(self):
         hold_stdout = sys.stdout
@@ -33,7 +33,7 @@ class TestIgor(unittest.TestCase):
         sys.stdout = hold_stdout
         self.assertEqual(out.getvalue(), self.expected)
         # make sure the file wasn't touched
-        self.assertEqual(open(self.filename).read(), "bar")
+        self.assertEqual(open(self.filename).read(), "bar\nbaz")
 
     def testIgorInplace(self):
         # Now run Igor in normal mode and make sure the import was replaced.

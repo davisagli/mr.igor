@@ -22,8 +22,7 @@ class ImportChecker(Checker):
         for (name, alias) in node.names:
             if alias is not None:
                 continue
-        
-        self.record_import(name, node.modname)
+            self.record_import(name, node.modname)
 
     def record_import(self, name, source):
         db = self._igor_import_db
