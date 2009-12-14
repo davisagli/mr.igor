@@ -2,6 +2,7 @@ Changelog
 =========
 
 2009/12/14
+ - Released version 1.1. [davisagli]
  - Fix issue where a syntax error would cause the file to be clobbered when
    using print mode as a filter. [davisagli]
  - Fix issue where print mode would not print anything if no new imports were
