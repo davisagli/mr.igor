@@ -49,3 +49,11 @@ settings:
 
 Now you can save the current file and run it through Igor using the ⌘I
 keyboard shortcut.
+
+Usage with Vim
+--------------
+
+The following key mapping will configure ⌘I to run the current file through
+Igor and then reload the current buffer::
+
+  nmap <D-i> :!igor %<CR> <bar> :e!<CR>
