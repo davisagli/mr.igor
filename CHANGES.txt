@@ -2,6 +2,7 @@ Changelog
 =========
 
 2009/12/14
+ - Released version 1.0. [davisagli]
  - Added functional test. [davisagli]
  - Refactor to improve testability; avoid monkeypatching. [davisagli]
 2009/12/13
