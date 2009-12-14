@@ -20,7 +20,4 @@ Otherwise the file will be modified inplace.
 Only "from x import y" style imports are tracked and inserted.  Aliases
 ("from x import y as z") are not supported.
 
-For now mr.igor stores its import database within the mr.igor egg,
-so imports are tracked separately for each Python installation. Note
-that this means your mr.igor egg must be writable by the user you are
-running the igor script as.
+mr.igor stores its database in ~/.mr.igor.db.
