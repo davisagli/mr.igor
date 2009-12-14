@@ -16,17 +16,23 @@ def check(fname, output):
     try:
         tree = compiler.parse(codestring)
     except (SyntaxError, IndentationError):
-        value = sys.exc_info()[1]
-        try:
-            (lineno, offset, line) = value[1][1:]
-        except IndexError:
-            print >> sys.stderr, 'could not compile %r' % (fname,)
-            return 1
-        if line.endswith("\n"):
-            line = line[:-1]
-        print >> sys.stderr, '%s:%d: could not compile' % (fname, lineno)
-        print >> sys.stderr, line
-        print >> sys.stderr, " " * (offset-2), "^"
+        if output is print_output:
+            # silently ignore syntax errors in print mode, to avoid clobbering
+            # things when we're used as a filter
+            output('', fname)
+            return
+        else:
+            value = sys.exc_info()[1]
+            try:
+                (lineno, offset, line) = value[1][1:]
+            except IndexError:
+                print >> sys.stderr, 'could not compile %r' % (fname,)
+                return 1
+            if line.endswith("\n"):
+                line = line[:-1]
+            print >> sys.stderr, '%s:%d: could not compile' % (fname, lineno)
+            print >> sys.stderr, line
+            print >> sys.stderr, " " * (offset-2), "^"
     else:
         checker = ImportChecker(tree, fname)
         

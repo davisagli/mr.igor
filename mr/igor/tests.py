@@ -61,6 +61,17 @@ class TestIgor(unittest.TestCase):
         sys.stdout = hold_stdout
         self.assertEqual(out.getvalue(), 'qux')
 
+    def testPrintModeDoesNothingOnSyntaxError(self):
+        f = open(self.filename, 'w')
+        f.write('from')
+        f.close()
+        
+        hold_stdout = sys.stdout
+        sys.stdout = out = StringIO()
+        igor('--print', self.filename)
+        sys.stdout = hold_stdout
+        self.assertEqual(out.getvalue(), 'from')
+        
     def tearDown(self):
         os.unlink(self.filename)
 
