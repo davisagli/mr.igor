@@ -1,4 +1,2 @@
 - Smarter heuristics for where in the file to insert the imports
   (e.g. should be after initial docstrings/comments)
-
-- Tests.

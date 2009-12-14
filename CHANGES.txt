@@ -1,6 +1,9 @@
 Changelog
 =========
 
+2009/12/14
+ - Added functional test. [davisagli]
+ - Refactor to improve testability; avoid monkeypatching. [davisagli]
 2009/12/13
  - Add help for console script. [davisagli]
  - Use ~/.mr.igor.db as default database location. [davisagli]

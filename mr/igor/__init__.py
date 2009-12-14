@@ -1,73 +1,87 @@
+import compiler
 import sys
 import os
 import fileinput
-import shelve
-import pyflakes.checker
+import pyflakes
+from mr.igor.checker import ImportChecker
 
-import_db_fname = os.path.join(os.path.expanduser('~'), '.mr.igor')
-
-PRINT = False
-
-def add_missing_imports(checker):
-    imports = set()
-    for msg in checker.messages:
-        if isinstance(msg, pyflakes.messages.UndefinedName):
-            name = msg.message_args[0]
-            imp = find_import(checker._igor_import_db, name)
-            if imp is not None and imp not in imports:
-                imports.add(imp)
-    if PRINT:
-        if len(imports):
-            sys.stdout.write("\n".join(imports) + "\n")
-        for line in fileinput.input(checker.filename):
-            sys.stdout.write(line)
-        # avoid the normal pyflakes warnings
-        sys.exit()
+def check(fname, output):
+    """ Check a file's imports and output missing imports using the output function. """
+    if os.path.exists(fname):
+        codestring = file(fname, 'U').read() + '\n'
     else:
-        # rewrite file inline
-        for i, line in enumerate(fileinput.input(checker.filename, inplace = 1)):
-            if i == 0 and len(imports):
-                sys.stdout.write("\n".join(imports) + "\n")
-            sys.stdout.write(line)
-
-def record_import(db, node):
-    source = node.modname
-    for (name, alias) in node.names:
-        if alias is not None:
-            continue
+        print >> sys.stderr, '%s: no such file' % fname
+        return 1
         
-        source_counts = db.setdefault(name, {})
-        source_counts.setdefault(source, 0)
-        source_counts[source] += 1
-        db[name] = source_counts
-        #print "Recording import. Source: %s. Name: %s" % (source, name)
+    try:
+        tree = compiler.parse(codestring)
+    except (SyntaxError, IndentationError):
+        value = sys.exc_info()[1]
+        try:
+            (lineno, offset, line) = value[1][1:]
+        except IndexError:
+            print >> sys.stderr, 'could not compile %r' % (fname,)
+            return 1
+        if line.endswith("\n"):
+            line = line[:-1]
+        print >> sys.stderr, '%s:%d: could not compile' % (fname, lineno)
+        print >> sys.stderr, line
+        print >> sys.stderr, " " * (offset-2), "^"
+    else:
+        checker = ImportChecker(tree, fname)
+        
+        imports = set()
+        for msg in checker.messages:
+            if isinstance(msg, pyflakes.messages.UndefinedName):
+                name = msg.message_args[0]
+                imp = checker.find_import(name)
+                if imp is not None and imp not in imports:
+                    imports.add(imp)
+        if imports:
+            output("\n".join(imports) + "\n", fname)
 
-def find_import(db, name):
-    if name in db:
-        # find key with max value.
-        # in py2.5+ we could use max(db[name], key=db[name].get)
-        max = 0
-        max_source = None
-        for source, count in db[name].iteritems():
-            if count > max:
-                max = count
-                max_source = source
-        #print "Found import. Source: %s. Name: %s" % (max_source, name)
-        return "from %s import %s" % (max_source, name)
+def print_output(imports, fname):
+    """ Outputs by printing the modified file to stdout. """
+    sys.stdout.write(imports)
+    for line in fileinput.input(fname):
+        sys.stdout.write(line)
 
-orig_checker_init = pyflakes.checker.Checker.__init__
-def patched_checker_init(self, tree, filename):
-    self._igor_import_db = shelve.open(import_db_fname)
-    orig_checker_init(self, tree, filename)
-    add_missing_imports(self)
-pyflakes.checker.Checker.__init__ = patched_checker_init
+def edit_inplace(imports, fname):
+    """ Outputs by modifying file inplace. """
+    # rewrite file inline
+    for i, line in enumerate(fileinput.input(fname, inplace = 1)):
+        if i == 0:
+            sys.stdout.write(imports)
+        sys.stdout.write(line)
 
-def patched_checker_del(self):
-    self._igor_import_db.close()
-pyflakes.checker.Checker.__del__ = patched_checker_del
+def main(*args):
+    args = list(args)
+    if not len(args):
+        args = sys.argv[1:]
+    
+    if not len(args) or args[0:1] in (['-h'], ['--help']):
+        print_help()
+        return 1
+    
+    if args[0:1] == ['--print']:
+        args = args[1:]
+        output = print_output
+    else:
+        output = edit_inplace
+        
+    try:
+        fname = args[0]
+    except IndexError:
+        print >> sys.stderr, "Expected filename."
+        return 1
 
-orig_FROM = pyflakes.checker.Checker.FROM
-def patched_FROM(self, node):
-    orig_FROM(self, node)
-    record_import(self._igor_import_db, node)
-pyflakes.checker.Checker.FROM = patched_FROM
+    return check(fname, output=output)
+
+def print_help():
+    print >> sys.stderr, """
+Igor records your imports and adds missing imports for names it recognizes.
+Usage: igor [--print] filename
+
+  --print  Causes Igor to write the modified file to stdout rather than
+           making changes inplace.
+"""

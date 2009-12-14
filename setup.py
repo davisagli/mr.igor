@@ -27,6 +27,6 @@ setup(name='mr.igor',
       ],
       entry_points="""
       [console_scripts]
-      igor = mr.igor.script:main
+      igor = mr.igor:main
       """,
       )
