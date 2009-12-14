@@ -1,14 +1,13 @@
 Overview
 --------
 
-Mr. Igor provides the parts you need to build your Frankenprogram.
-
-  But how does it know?
-    "It'th a knack."
-
 mr.igor is an extension to pyflakes that will learn where you import
 things from, and then automatically fill in missing imports from the
 place they are most often imported.
+
+But how does it know?
+
+  "It'th a knack."
 
 Usage: igor [--print] filename
 
