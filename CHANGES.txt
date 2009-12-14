@@ -1,10 +1,10 @@
 Changelog
 =========
 
-- 2009/12/13 - Use ~/.mr.igor.db as default database location. [davisagli]
-
-- 2009/12/13 - Added --print option. [davisagli]
-
-- 2009/12/13 - Added igor console script. [davisagli]
-
-- 2009/12/12 - Initial proof-of-concept. [davisagli]
+2009/12/13
+ - Add help for console script. [davisagli]
+ - Use ~/.mr.igor.db as default database location. [davisagli]
+ - Added --print option. [davisagli]
+ - Added igor console script. [davisagli]
+2009/12/12
+ - Initial proof-of-concept. [davisagli]
