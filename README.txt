@@ -1,3 +1,6 @@
+Overview
+--------
+
 Mr. Igor provides the parts you need to build your Frankenprogram.
 
   But how does it know?
@@ -21,3 +24,29 @@ Only "from x import y" style imports are tracked and inserted.  Aliases
 ("from x import y as z") are not supported.
 
 mr.igor stores its database in ~/.mr.igor.db.
+
+
+Usage with TextMate
+-------------------
+
+Go to the TextMate Bundle Editor and add a new command with the following
+settings:
+
+ Save
+   Current File
+ Command(s)
+   ::
+   
+    #!/bin/bash
+    igor --print $TM_FILEPATH
+ Input
+   None
+ Output
+   Replace Document
+ Activation
+   Key Equivalent:  ⌘I
+ Scope Selector
+   source.python
+
+Now you can save the current file and run it through Igor using the ⌘I
+keyboard shortcut.
