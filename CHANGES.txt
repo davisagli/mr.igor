@@ -2,7 +2,10 @@ Changelog
 =========
 
 2009/12/14
- - Fix issue where multiple imports in the same line were not recorded. [davisagli]
+ - Fix issue where print mode would not print anything if no new imports were
+   found. [davisagli]
+ - Fix issue where multiple imports in the same line were not recorded.
+   [davisagli]
  - Released version 1.0. [davisagli]
  - Added functional test. [davisagli]
  - Refactor to improve testability; avoid monkeypatching. [davisagli]

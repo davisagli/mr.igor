@@ -39,6 +39,8 @@ def check(fname, output):
                     imports.add(imp)
         if imports:
             output("\n".join(imports) + "\n", fname)
+        else:
+            output('', fname)
 
 def print_output(imports, fname):
     """ Outputs by printing the modified file to stdout. """

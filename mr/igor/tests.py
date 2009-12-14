@@ -5,11 +5,16 @@ import unittest
 from StringIO import StringIO
 
 from mr.igor import main as igor
+from mr.igor import checker
 
 class TestIgor(unittest.TestCase):
     """ Functional test for Igor. """
 
     def setUp(self):
+        checker.IMPORT_DB_FNAME += '.test'
+        if os.path.exists(checker.IMPORT_DB_FNAME + '.db'):
+            os.unlink(checker.IMPORT_DB_FNAME + '.db')
+        
         (fd, self.filename) = tempfile.mkstemp(text=True)
         os.close(fd)
         
@@ -21,10 +26,10 @@ class TestIgor(unittest.TestCase):
         
         # Now manually remove the import
         f = open(self.filename, 'w')
-        f.write('bar\nbaz')
+        f.write('bar\nbaz\n')
         f.close()
         
-        self.expected = "from foo import bar\nfrom foo import baz\nbar\nbaz"
+        self.expected = "from foo import bar\nfrom foo import baz\nbar\nbaz\n"
 
     def testIgorPrinted(self):
         hold_stdout = sys.stdout
@@ -33,12 +38,28 @@ class TestIgor(unittest.TestCase):
         sys.stdout = hold_stdout
         self.assertEqual(out.getvalue(), self.expected)
         # make sure the file wasn't touched
-        self.assertEqual(open(self.filename).read(), "bar\nbaz")
+        self.assertEqual(open(self.filename).read(), "bar\nbaz\n")
+        
 
     def testIgorInplace(self):
         # Now run Igor in normal mode and make sure the import was replaced.
         igor(self.filename)
-        self.assertEqual(open(self.filename).read(), self.expected)
+        f = open(self.filename)
+        self.assertEqual(f.read(), self.expected)
+        f.close()
+    
+    def testIgorPrintsOriginalIfNoImportsFound(self):
+        # make sure the original file is still output in print mode
+        # if Igor found no new imports
+        f = open(self.filename, 'w')
+        f.write('qux')
+        f.close()
+        
+        hold_stdout = sys.stdout
+        sys.stdout = out = StringIO()
+        igor('--print', self.filename)
+        sys.stdout = hold_stdout
+        self.assertEqual(out.getvalue(), 'qux')
 
     def tearDown(self):
         os.unlink(self.filename)
