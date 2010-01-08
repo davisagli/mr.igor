@@ -1,6 +1,8 @@
 Changelog
 =========
 
+2010/1/7
+ - Added --reap option. [davisagli]
 2009/12/14
  - Added usage info for integration with Vim.  Thanks to Stephan Eletzhofer.
    [davisagli]
