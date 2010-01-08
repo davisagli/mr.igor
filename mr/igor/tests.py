@@ -40,7 +40,6 @@ class TestIgor(unittest.TestCase):
         self.assertEqual(out.getvalue(), self.expected)
         # make sure the file wasn't touched
         self.assertEqual(open(self.filename).read(), "bar\nbaz\n")
-        
 
     def testIgorInplace(self):
         # Now run Igor in normal mode and make sure the import was replaced.
@@ -72,7 +71,19 @@ class TestIgor(unittest.TestCase):
         igor('--print', self.filename)
         sys.stdout = hold_stdout
         self.assertEqual(out.getvalue(), 'from')
+    
+    def testIgorReapMode(self):
+        # make sure db starts empty
+        os.unlink(checker.IMPORT_DB_FNAME + '.db')
+
+        hold_stdout = sys.stdout
+        sys.stdout = out = StringIO()
+        igor('--reap', self.filename)
+        sys.stdout = hold_stdout
         
+        self.failIf(out.getvalue())
+        self.failUnless(open(checker.IMPORT_DB_FNAME + '.db').read())
+    
     def tearDown(self):
         os.unlink(self.filename)
 

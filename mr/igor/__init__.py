@@ -54,6 +54,9 @@ def print_output(imports, fname):
     for line in fileinput.input(fname):
         sys.stdout.write(line)
 
+def null_output(imports, fname):
+    pass
+
 def edit_inplace(imports, fname):
     """ Outputs by modifying file inplace. """
     # rewrite file inline
@@ -74,6 +77,9 @@ def main(*args):
     if args[0:1] == ['--print']:
         args = args[1:]
         output = print_output
+    elif args[0:1] == ['--reap']:
+        args = args[1:]
+        output = null_output
     else:
         output = edit_inplace
         
