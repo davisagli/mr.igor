@@ -50,8 +50,12 @@ def check(fname, output):
 
 def print_output(imports, fname):
     """ Outputs by printing the modified file to stdout. """
-    sys.stdout.write(imports)
+    in_initial_comments = True
     for line in fileinput.input(fname):
+        if in_initial_comments:
+            if not line.startswith('#'):
+                in_initial_comments = False
+                sys.stdout.write(imports)
         sys.stdout.write(line)
 
 def null_output(imports, fname):
@@ -60,9 +64,12 @@ def null_output(imports, fname):
 def edit_inplace(imports, fname):
     """ Outputs by modifying file inplace. """
     # rewrite file inline
+    in_initial_comments = True
     for i, line in enumerate(fileinput.input(fname, inplace = 1)):
-        if i == 0:
-            sys.stdout.write(imports)
+        if in_initial_comments:
+            if not line.startswith('#'):
+                in_initial_comments = False
+                sys.stdout.write(imports)
         sys.stdout.write(line)
 
 def main(*args):

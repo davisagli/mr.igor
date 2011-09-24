@@ -83,6 +83,19 @@ class TestIgor(unittest.TestCase):
         
         self.failIf(out.getvalue())
         self.failUnless(open(checker.IMPORT_DB_FNAME + '.db').read())
+
+    def testInitialSimpleComments(self):
+        f = open(self.filename, 'w')
+        f.write('# -*- coding: utf8 -*-\nbar\nbaz\n')
+        f.close()
+
+        expected = "# -*- coding: utf8 -*-\nfrom foo import bar\nfrom foo import baz\nbar\nbaz\n"
+
+        igor(self.filename)
+        f = open(self.filename)
+        self.assertEqual(f.read(), expected)
+        f.close()
+
     
     def tearDown(self):
         os.unlink(self.filename)
