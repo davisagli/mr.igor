@@ -3,6 +3,8 @@ Changelog
 
 (unreleased)
 
+- Insert imports after initial set of comments, to fix issue when
+  PEP0263 encoding is declared in python files. [naro]
 - Updated to be compatible with (and require) pyflakes 0.5. [davisagli]
 
 2010/1/7
