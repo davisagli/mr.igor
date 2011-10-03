@@ -1,11 +1,14 @@
 Changelog
 =========
 
-(unreleased)
+2011/10/2
 
+- Released version 1.3. [davisagli]
 - Insert imports after initial set of comments, to fix issue when
   PEP0263 encoding is declared in python files. [naro]
-- Updated to be compatible with (and require) pyflakes 0.5. [davisagli]
+- Updated to be compatible with (and require) pyflakes 0.5.
+  Tested with Python 2.6.
+  [davisagli]
 
 2010/1/7
 
