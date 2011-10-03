@@ -16,13 +16,13 @@ class ImportChecker(Checker):
     def __del__(self):
         self._igor_import_db.close()
     
-    def FROM(self, node):
-        super(ImportChecker, self).FROM(node)
+    def IMPORTFROM(self, node):
+        super(ImportChecker, self).IMPORTFROM(node)
 
-        for (name, alias) in node.names:
-            if alias is not None:
+        for alias in node.names:
+            if alias.asname is not None:
                 continue
-            self.record_import(name, node.modname)
+            self.record_import(alias.name, node.module)
 
     def record_import(self, name, source):
         db = self._igor_import_db
