@@ -1,8 +1,8 @@
-import compiler
 import sys
 import os
 import fileinput
 import pyflakes
+import _ast
 from mr.igor.checker import ImportChecker
 
 def check(fname, output):
@@ -14,7 +14,7 @@ def check(fname, output):
         return 1
         
     try:
-        tree = compiler.parse(codestring)
+        tree = compile(codestring, fname, "exec", _ast.PyCF_ONLY_AST)
     except (SyntaxError, IndentationError):
         if output is print_output:
             # silently ignore syntax errors in print mode, to avoid clobbering

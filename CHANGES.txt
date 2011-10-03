@@ -1,26 +1,37 @@
 Changelog
 =========
 
+(unreleased)
+
+- Updated to be compatible with (and require) pyflakes 0.5. [davisagli]
+
 2010/1/7
- - Released version 1.2. [davisagli]
- - Added --reap option. [davisagli]
+
+- Released version 1.2. [davisagli]
+- Added --reap option. [davisagli]
+
 2009/12/14
- - Added usage info for integration with Vim.  Thanks to Stephan Eletzhofer.
-   [davisagli]
- - Released version 1.1. [davisagli]
- - Fix issue where a syntax error would cause the file to be clobbered when
-   using print mode as a filter. [davisagli]
- - Fix issue where print mode would not print anything if no new imports were
-   found. [davisagli]
- - Fix issue where multiple imports in the same line were not recorded.
-   [davisagli]
- - Released version 1.0. [davisagli]
- - Added functional test. [davisagli]
- - Refactor to improve testability; avoid monkeypatching. [davisagli]
+
+- Added usage info for integration with Vim.  Thanks to Stephan Eletzhofer.
+  [davisagli]
+- Released version 1.1. [davisagli]
+- Fix issue where a syntax error would cause the file to be clobbered when
+  using print mode as a filter. [davisagli]
+- Fix issue where print mode would not print anything if no new imports were
+  found. [davisagli]
+- Fix issue where multiple imports in the same line were not recorded.
+  [davisagli]
+- Released version 1.0. [davisagli]
+- Added functional test. [davisagli]
+- Refactor to improve testability; avoid monkeypatching. [davisagli]
+
 2009/12/13
- - Add help for console script. [davisagli]
- - Use ~/.mr.igor.db as default database location. [davisagli]
- - Added --print option. [davisagli]
- - Added igor console script. [davisagli]
+
+- Add help for console script. [davisagli]
+- Use ~/.mr.igor.db as default database location. [davisagli]
+- Added --print option. [davisagli]
+- Added igor console script. [davisagli]
+
 2009/12/12
- - Initial proof-of-concept. [davisagli]
+
+- Initial proof-of-concept. [davisagli]
