@@ -5,7 +5,7 @@ version = '1.4dev'
 setup(name='mr.igor',
       version=version,
       description="Mr. Igor provides the parts you need to build your Frankenprogram.",
-      long_description=open("README.txt").read() + "\n" +
+      long_description=open("README.rst").read() + "\n" +
                        open("CHANGES.txt").read(),
       # Get more strings from http://pypi.python.org/pypi?%3Aaction=list_classifiers
       classifiers=[
