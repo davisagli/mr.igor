@@ -61,3 +61,35 @@ The following key mapping will configure ⌘I to run the current file through
 Igor and then reload the current buffer::
 
   nmap <D-i> :!igor %<CR> <bar> :e!<CR>
+
+Usage with Emacs
+----------------
+
+Add the following to your .emacs. The ``igor`` function runs Igor over a
+temporary file copy of the current buffer. The current buffer is marked as
+modified only if Igor adds new imports.
+
+::
+
+  (defun igor ()
+    "Run the current buffer through mr.igor."
+    (interactive)
+    (let ((igor-exe (or (executable-find "igor")
+                        (error "No command 'igor' found")))
+          (tempfile (make-temp-file "igor"))
+          (buffer (current-buffer))
+          (lines-before (count-lines 1 (buffer-size))))
+      (with-temp-file tempfile
+        (insert-buffer-substring buffer))
+      (with-temp-buffer
+        (shell-command (concat igor-exe " --print " tempfile) t)
+        (if (zerop (compare-buffer-substrings
+                    (current-buffer) 1 (buffer-size)
+                    buffer 1 (buffer-size buffer)))
+            (message "igor: no new imports")
+          (copy-to-buffer buffer 1 (buffer-size))
+          (let ((lines-after (count-lines 1 (buffer-size))))
+            (message "igor: added %d imports" (- lines-after lines-before))))
+        (delete-file tempfile))))
+
+  (add-hook 'python-mode-hook '(lambda () (local-set-key (kbd "C-c C-i") 'igor)))
