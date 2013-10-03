@@ -26,7 +26,9 @@ and the file will not be modified.
 Only "from x import y" style imports are tracked and inserted.  Aliases
 ("from x import y as z") are not supported.
 
-mr.igor stores its database in ~/.mr.igor.db.
+mr.igor stores its database in the user's home directory. The base filename is
+~/.mr.igor, but note that the Python shelve module may use a different physical
+filename, e.g. with a .db suffix.
 
 
 Usage with TextMate
