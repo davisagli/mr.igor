@@ -12,10 +12,13 @@ class ImportChecker(Checker):
     def __init__(self, tree, filename):
         self._igor_import_db = shelve.open(IMPORT_DB_BASE_FILENAME)
         super(ImportChecker, self).__init__(tree, filename)
-    
-    def __del__(self):
+
+    def __enter__(self):
+        return self
+
+    def __exit__(self, type, value, traceback):
         self._igor_import_db.close()
-    
+
     def IMPORTFROM(self, node):
         super(ImportChecker, self).IMPORTFROM(node)
 

@@ -34,15 +34,16 @@ def check(fname, output):
             print >> sys.stderr, line
             print >> sys.stderr, " " * (offset-2), "^"
     else:
-        checker = ImportChecker(tree, fname)
-        
         imports = set()
-        for msg in checker.messages:
-            if isinstance(msg, pyflakes.messages.UndefinedName):
-                name = msg.message_args[0]
-                imp = checker.find_import(name)
-                if imp is not None and imp not in imports:
-                    imports.add(imp)
+
+        with ImportChecker(tree, fname) as checker:
+            for msg in checker.messages:
+                if isinstance(msg, pyflakes.messages.UndefinedName):
+                    name = msg.message_args[0]
+                    imp = checker.find_import(name)
+                    if imp is not None and imp not in imports:
+                        imports.add(imp)
+
         if imports:
             output("\n".join(imports) + "\n", fname)
         else:
