@@ -1,8 +1,9 @@
 Changelog
 =========
 
-(Unreleased)
+2013/10/05
 
+- Released version 1.4. [davisagli]
 - ImportChecker's __del__ isn't called with pyflakes 0.7 so the database is
   never written. Switch to a with() statement, where the __exit__ method is
   guaranteed to be called.
