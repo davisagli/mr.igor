@@ -2,7 +2,7 @@ import os
 import shelve
 from pyflakes.checker import Checker
 
-IMPORT_DB_FNAME = os.path.join(os.path.expanduser('~'), '.mr.igor')
+IMPORT_DB_BASE_FILENAME = os.path.join(os.path.expanduser('~'), '.mr.igor')
 
 class ImportChecker(Checker):
     """ Subclass of the checker from pyflakes that knows how to keep track of
@@ -10,12 +10,15 @@ class ImportChecker(Checker):
     """
 
     def __init__(self, tree, filename):
-        self._igor_import_db = shelve.open(IMPORT_DB_FNAME)
+        self._igor_import_db = shelve.open(IMPORT_DB_BASE_FILENAME)
         super(ImportChecker, self).__init__(tree, filename)
-    
-    def __del__(self):
+
+    def __enter__(self):
+        return self
+
+    def __exit__(self, type, value, traceback):
         self._igor_import_db.close()
-    
+
     def IMPORTFROM(self, node):
         super(ImportChecker, self).IMPORTFROM(node)
 
